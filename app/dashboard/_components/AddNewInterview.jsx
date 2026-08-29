@@ -86,10 +86,12 @@ if(MockJsonResp){
                 <DialogHeader>
                 <DialogTitle className="text-2xl">Tell us more about your Job Interviewing</DialogTitle>
                 <DialogDescription>
-                    <form onSubmit={onSubmit}>
-                    <div className='text-white'>
-                            Add Details about your Job position/role, Job description and Years of Experience
-                       
+                    Add Details about your Job position/role, Job description and Years of Experience
+                </DialogDescription>
+                </DialogHeader>
+                
+                <form onSubmit={onSubmit}>
+                    <div>
                         <div className='text-black mt-7 my-2'>
                             <label>Job Role/Job Position</label>
                             <Input className='text-black mt-4' placeholder="Ex. Full Stack Developer" required
@@ -107,7 +109,6 @@ if(MockJsonResp){
                             <Input className=' text-black mt-4' placeholder="Ex. 5" type="number" max="50" required
                             onChange={(event)=>setjobExperience(event.target.value)}/>
                         </div>
-
                     </div>
                     <div className='flex gap-5 justify-end'>
                         <Button type="button" variant="ghost" onClick={()=>setOpenDailog(false)}>Cancel</Button>
@@ -120,9 +121,7 @@ if(MockJsonResp){
                     }
                     </Button>
                     </div>
-                    </form>
-                </DialogDescription>
-                </DialogHeader>
+                </form>
             </DialogContent>
         </Dialog>
 
