@@ -7,22 +7,26 @@ import QuestionsSection from './_components/QuestionsSection';
 import RecordAnswerSection from './_components/RecordAnswerSection';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { useParams } from 'next/navigation';
 
-function StartInterview({ params }) {
+function StartInterview() {
+  const { interviewId } = useParams();
   const [interviewData, setInterviewData] = useState(null);
   const [mockInterviewQuestion, setMockInterviewQuestion] = useState([]); // Initialize as an empty array
   const [activeQuestionIndex, setActiveQuestionIndex] = useState(0);
 
   useEffect(() => {
-    GetInterviewDetails();
-  }, []);
+    if (interviewId) {
+      GetInterviewDetails();
+    }
+  }, [interviewId]);
 
   const GetInterviewDetails = async () => {
     try {
       const result = await db
         .select()
         .from(MockInterview)
-        .where(eq(MockInterview.mockId, params.interviewId));
+        .where(eq(MockInterview.mockId, interviewId));
 
       if (result.length === 0) {
         console.error("No interview data found.");

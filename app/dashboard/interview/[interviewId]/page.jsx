@@ -7,23 +7,26 @@ import Webcam from "react-webcam";
 import { Lightbulb, WebcamIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 
-function Interview({ params }) {
+function Interview() {
+  const { interviewId } = useParams();
   const [interviewData, setInterviewData] = useState();
-  const [interviewId, setinterviewId] = useState();
   const [webCamEnabled, setWebCamEnabled] = useState(false);
   const webcamRef = React.useRef(null);
   
   useEffect(() => {
-    console.log("Interview ID:", params.interviewId);
-    GetInterviewDetails();
-  }, [params.interviewId]);
+    if (interviewId) {
+      console.log("Interview ID:", interviewId);
+      GetInterviewDetails();
+    }
+  }, [interviewId]);
 
   const GetInterviewDetails = async () => {
     const result = await db
       .select()
       .from(MockInterview)
-      .where(eq(MockInterview.mockId, params.interviewId));
+      .where(eq(MockInterview.mockId, interviewId));
 
     setInterviewData(result[0]);
   };
@@ -96,7 +99,7 @@ function Interview({ params }) {
       </div>
   
     <div className="flex justify-end items">
-        <Link href={'/dashboard/interview/'+params.interviewId+'/start'}>
+        <Link href={'/dashboard/interview/'+interviewId+'/start'}>
         <Button>Start Interview</Button></Link>
     </div>
 

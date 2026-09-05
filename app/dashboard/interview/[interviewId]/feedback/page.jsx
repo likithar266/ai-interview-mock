@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import { db } from "@/utils/db";
 import { eq } from "drizzle-orm";
 import { useRouter } from "next/navigation"; 
+import { useParams } from "next/navigation";
 import {
   Collapsible,
   CollapsibleContent,
@@ -13,8 +14,8 @@ import {
 import { ChevronsUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-function Feedback({ params }) {
-  const interviewId = params?.interviewId; // Ensure params is received correctly
+function Feedback() {
+  const { interviewId } = useParams();
   const router = useRouter();
   const [feedbackList, setFeedbackList] = useState([]);
 
