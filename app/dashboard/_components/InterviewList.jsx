@@ -33,7 +33,7 @@ function InterviewList() {
 
         <div>
             {interviewList&&interviewList.map((interview,index)=>(
-                <InterviewItemCard key={index}/>
+                <InterviewItemCard key={interview.mockId || index} interview={interview}/>
             ))}
         </div>
     </div>
