@@ -37,9 +37,7 @@ function RecordAnswerSection({mockInterviewQuestion,activeQuestionIndex, intervi
   });
   
   useEffect(()=>{
-    results.map((result)=>(
-        setUserAnswer(prevAns=>prevAns+result?.transcript)
-    ))
+    setUserAnswer(results.map((result) => result?.transcript || '').join(' ').trim());
   }, [results])
 
   useEffect(()=>{
@@ -71,43 +69,39 @@ function RecordAnswerSection({mockInterviewQuestion,activeQuestionIndex, intervi
 }
 
 const UpdateUserAnswer=async()=>{
-  console.log(userAnswer);
-
   setLoading(true)
+  try {
+    const feedbackPrompt= "Question:"+mockInterviewQuestion[activeQuestionIndex]?.Question+
+    ", User Answer:"+userAnswer+", Depends on question and user answer for given interview question"+
+    " Please give us rating for answer and feedback as area of improvement if any"+
+    "in just 3 to 5 lines to improve it in JSON format with rating field and feedback field" ;
 
-  const feedbackPrompt= "Question:"+mockInterviewQuestion[activeQuestionIndex]?.Question+
-  ", User Answer:"+userAnswer+", Depends on question and user answer for given interview question"+
-  " Please give us rating for answer and feedback as area of improvement if any"+
-  "in just 3 to 5 lines to improve it in JSON format with rating field and feedback field" ;
+    const result = await chatSession.sendMessage(feedbackPrompt);
+    const mockJsonResp=(result.response.text()).replace('```json', '').replace('```', '').trim();
+    const JsonFeedbackResp=JSON.parse(mockJsonResp);
 
-  const result = await chatSession.sendMessage(feedbackPrompt);
-
-  const mockJsonResp=(result.response.text()).replace('```json', '').replace('```', '');
-  console.log(mockJsonResp)
-  const JsonFeedbackResp=JSON.parse(mockJsonResp);
-
-    const resp=await db.insert(UserAnswer)
-    .values(
+    await db.insert(UserAnswer).values(
       {
-        mockIdRef:interviewData?.mockId,
-        question:mockInterviewQuestion[activeQuestionIndex]?.Question,
-        correctAns:mockInterviewQuestion[activeQuestionIndex]?.Answered,
-        userAns:userAnswer,
-        feedback:JsonFeedbackResp?.feedback,
-        rating:JsonFeedbackResp?.rating,
-        userEmail:user?.primaryEmailAddress?.emailAddress,
-        createdAt:moment().format('DD-MM-yyyy')
+          mockIdRef:interviewData?.mockId,
+          question:mockInterviewQuestion[activeQuestionIndex]?.Question,
+          correctAns:mockInterviewQuestion[activeQuestionIndex]?.Answered,
+          userAns:userAnswer,
+          feedback:JsonFeedbackResp?.feedback,
+          rating:JsonFeedbackResp?.rating,
+          userEmail:user?.primaryEmailAddress?.emailAddress,
+          createdAt:moment().format('DD-MM-yyyy')
       }
-    )
+    );
 
-    if(resp){
-      toast('User Answer recorded successfully')
-      setUserAnswer('');
-      setResults([]);
-    }
-
+    toast('User Answer recorded successfully')
+    setUserAnswer('');
     setResults([]);
+  } catch (error) {
+    console.error('Error recording user answer:', error);
+    toast.error('Unable to record your answer. Please try again.');
+  } finally {
     setLoading(false);
+    }
 }
 
   return (
@@ -126,8 +120,7 @@ const UpdateUserAnswer=async()=>{
           <Image src={"/webcam.png"} width={200} height={200} alt="Webcam" />
         )}
       </div>
-window
-      <Button
+<Button
         disabled={loading}
         variant="outline"
         className="my-10 cursor-pointer"

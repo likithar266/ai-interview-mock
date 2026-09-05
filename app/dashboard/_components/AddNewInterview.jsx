@@ -34,44 +34,37 @@ function AddNewInterview() {
     const router=useRouter();
 
     const onSubmit=async(e)=>{
-        setloading(true)
         e.preventDefault()
+        setloading(true)
         
-        console.log(jobDescription, jobPosition, jobExperience)
-        
-       
-        const InputPrompt= "Job Position: "+jobPosition+" , Job Description: "+jobDescription+", Years of Experience: "+jobExperience+", Depends on the this information please give me "+process.env.NEXT_PUBLIC_INTERVIEW_QUESTION_COUNT+" Interview questions with Answered in JSON Format, Give Question and Answered as fields in JSON"
-    
-        const result=await chatSession.sendMessage(InputPrompt);
+        try {
+            const InputPrompt= "Job Position: "+jobPosition+" , Job Description: "+jobDescription+", Years of Experience: "+jobExperience+", Depends on the this information please give me "+process.env.NEXT_PUBLIC_INTERVIEW_QUESTION_COUNT+" Interview questions with Answered in JSON Format, Give Question and Answered as fields in JSON"
+            const result=await chatSession.sendMessage(InputPrompt);
+            const MockJsonResp = (result.response.text()).replace('```json', '').replace('```', '').trim();
+            JSON.parse(MockJsonResp);
 
-        const MockJsonResp = (result.response.text()).replace('```json', '').replace('```', '');
-        
-        console.log(JSON.parse(MockJsonResp));
+            setJsonResponse(MockJsonResp);
+            const resp = await db.insert(MockInterview).values(
+                {
+                    mockId:uuidv4(),
+                    jsonMockResp:MockJsonResp,
+                    jobPosition:jobPosition,
+                    jobDescription:jobDescription,
+                    jobExperience:jobExperience,
+                    createdBy:user?.primaryEmailAddress?.emailAddress,
+                    createdAt:moment().format('DD-MM-yyyy')
+                }).returning({mockId:MockInterview.mockId})
 
-        setJsonResponse(MockJsonResp);
-if(MockJsonResp){
-        const resp = await db.insert(MockInterview).values(
-            {
-                mockId:uuidv4(),
-                jsonMockResp:MockJsonResp,
-                jobPosition:jobPosition,
-                jobDescription:jobDescription,
-                jobExperience:jobExperience,
-                createdBy:user?.primaryEmailAddress?.emailAddress,
-                createdAt:moment().format('DD-MM-yyyy')
-            }).returning({mockId:MockInterview.mockId})
-            
-        console.log("Inserted ID:", resp)
-
-        if(resp){
-            setOpenDailog(false);
-            router.push('/dashboard/interview/'+resp[0]?.mockId)
+            if(resp[0]?.mockId){
+                setOpenDailog(false);
+                router.push('/dashboard/interview/'+resp[0].mockId)
+            }
+        } catch (error) {
+            console.error('Error creating interview:', error);
         }
-    }
-    else{
-        console.log("ERROR")
-    }
-        setloading(false);
+        finally {
+            setloading(false);
+        }
     }
 
   return (

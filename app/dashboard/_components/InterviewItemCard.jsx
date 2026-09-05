@@ -1,8 +1,13 @@
 import React from 'react'
 
-function InterviewItemCard() {
+function InterviewItemCard({ interview }) {
   return (
-    <div>InterviewItemCard</div>
+    <div className="my-3 rounded-lg border p-4">
+      <h3 className="font-medium">{interview?.jobPosition}</h3>
+      <p className="text-sm text-muted-foreground">
+        {interview?.jobDescription}
+      </p>
+    </div>
   )
 }
 
