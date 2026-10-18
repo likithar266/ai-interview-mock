@@ -26,8 +26,10 @@ import { UserAnswer } from "@/utils/schema";
 import { useUser } from "@clerk/nextjs";
 import moment from "moment";
 
-// Import TensorFlow.js and BlazeFace for real client-side camera face proctoring
-import * as tf from "@tensorflow/tfjs";
+// Import TensorFlow.js modular packages and BlazeFace for real client-side camera face proctoring
+import * as tf from "@tensorflow/tfjs-core";
+import "@tensorflow/tfjs-backend-webgl";
+import "@tensorflow/tfjs-converter";
 import * as blazeface from "@tensorflow-models/blazeface";
 
 function RecordAnswerSection({
