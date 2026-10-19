@@ -4,31 +4,31 @@
 
 ---
 
-## ✨ Features
+## Features
 
-- **🎯 Tailored 4-Stage Interviews**: Dynamically creates practical, role-specific questions across four sequential phases:
+- ** Tailored 4-Stage Interviews**: Dynamically creates practical, role-specific questions across four sequential phases:
   1. *Introduction & Background*
   2. *Project Architecture & Experience*
   3. *Core Technical Fundamentals*
   4. *Scenario-Based Problem Solving*
-- **👁️ Live Camera Proctoring (TensorFlow.js BlazeFace)**:
+- ** Live Camera Proctoring (TensorFlow.js BlazeFace)**:
   - Uses a client-side computer vision neural network running locally on your browser's WebGL.
   - Detects face presence in real time, alerting if the candidate leaves the frame or if multiple people enter.
   - Automatically flags window blur or tab-switching violations.
   - **100% Free**: Zero external computer vision API subscriptions or token costs.
-- **🎙️ Dual-Mode Answer Capture (Voice + Text)**:
+- ** Dual-Mode Answer Capture (Voice + Text)**:
   - Transcribes your spoken answers live into an editable text box using browser-native Web Speech recognition.
   - Edit typos, elaborate on points, or type answers directly if preferred.
-- **🔊 AI Voice Question Readout**:
+- ** AI Voice Question Readout**:
   - Automatically speaks interview questions aloud using the Web Speech Synthesis API.
-- **📊 Instant Evaluation Scorecard**:
+- ** Instant Evaluation Scorecard**:
   - Delivers an overall score (1–10), performance summary, and question-by-question comparative analysis showing your answer against ideal benchmark solutions.
-- **⚡ Ultra-Low Token Footprint**:
+- ** Ultra-Low Token Footprint**:
   - Compact JSON prompt architecture configured for **Gemini 2.5 Flash**, cutting token consumption by ~60% and staying well within Google AI Studio's 100% free tier.
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Framework**: [Next.js 16](https://nextjs.org/) (App Router, Turbopack) & [React 18](https://react.dev/)
 - **AI Model**: [Google Gemini 2.5 Flash](https://aistudio.google.com/) via `@google/generative-ai`
@@ -40,7 +40,7 @@
 
 ---
 
-## 🚀 Quick Start Guide
+## Quick Start Guide
 
 ### 1. Prerequisites
 Ensure you have installed:
@@ -92,7 +92,7 @@ Open **[http://localhost:3000](http://localhost:3000)** in your browser.
 
 ---
 
-## 📁 Project Architecture
+## Project Architecture
 
 ```
 ai-interview-mock/
@@ -117,6 +117,6 @@ ai-interview-mock/
 
 ---
 
-## 🛡️ License
+## License
 
 This project is licensed under the MIT License.
